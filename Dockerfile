@@ -51,3 +51,5 @@ RUN pyenv install $PYTHON_VERSION \
 RUN pip install -U pip
 
 RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+
+RUN chmod +x /opt/poetry/bin/peotry
