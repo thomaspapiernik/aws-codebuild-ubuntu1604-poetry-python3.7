@@ -56,15 +56,15 @@ RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-
 
 RUN chmod +x /opt/poetry/bin/poetry
 
-RUN curl 'https://archive.apache.org/dist/spark/spark-2.4.7/spark-2.4.7-bin-hadoop2.7.tgz' --output /spark/spark-2.4.7-bin-hadoop2.7.tgz
+RUN curl 'https://archive.apache.org/dist/spark/spark-2.4.7/spark-2.4.7-bin-hadoop2.7.tgz' --output ~/spark-2.4.7-bin-hadoop2.7.tgz
 
-RUN tar -xvzf /spark/spark-2.4.7-bin-hadoop2.7.tgz
+RUN tar -xvzf ~/spark-2.4.7-bin-hadoop2.7.tgz
 
 RUN JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
 
 RUN export JAVA_HOME
 
-RUN export SPARK_HOME=/spark/spark-2.4.7-bin-hadoop2.7
+RUN export SPARK_HOME=~/spark-2.4.7-bin-hadoop2.7
 
 RUN export PATH=$SPARK_HOME/bin:$PATH
 
