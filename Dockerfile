@@ -3,14 +3,14 @@ FROM ubuntu:16.04
 # set the variables as per $(pyenv init -)
 ENV LANG="C.UTF-8" \
     LC_ALL="C.UTF-8" \
-	POETRY_HOME="/opt/poetry" \
+	  POETRY_HOME="/opt/poetry" \
     PATH="/opt/poetry/bin:/opt/pyenv/shims:/opt/pyenv/bin:$PATH" \
     PYENV_ROOT="/opt/pyenv" \
     PYENV_SHELL="bash" \
-	PYTHON_VERSION="3.7.4"
+		PYTHON_VERSION="3.7.4"
 	
 RUN apt-get update && \
-	apt-get install -y build-essential \
+	  apt-get install -y build-essential \
 		checkinstall \
 		libreadline-gplv2-dev \
 		libncursesw5-dev \
@@ -33,15 +33,6 @@ RUN apt-get update && \
 		git && \
 		apt-get clean
 
-# Pull down Python 3.7, build, and install
-#RUN wget -q https://www.python.org/ftp/python/3.7.4/Python-3.7.4.tar.xz && \
-#	tar xf Python-3.7.4.tar.xz && \
-#	cd Python-3.7.4 && \
-#	./configure && \
-#	make bininstall && \
-#	ln -s /usr/local/bin/python3 /usr/local/bin/python && \
-#	cd .. && rm -rf Python*
-
 RUN curl https://pyenv.run | bash
 
 RUN pyenv install $PYTHON_VERSION \
@@ -56,17 +47,16 @@ RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-
 
 RUN chmod +x /opt/poetry/bin/poetry
 
-RUN curl 'https://archive.apache.org/dist/spark/spark-2.4.7/spark-2.4.7-bin-hadoop2.7.tgz' --output ~/spark-2.4.7-bin-hadoop2.7.tgz
+RUN curl 'https://archive.apache.org/dist/spark/spark-2.4.7/spark-2.4.7-bin-hadoop2.7.tgz' --output /tmp/spark-2.4.7-bin-hadoop2.7.tgz && \
+    cd / && \
+		tar -xvzf /tmp/spark-2.4.7-bin-hadoop2.7.tgz && \
+		rm /tmp/spark-2.4.7-bin-hadoop2.7.tgz && \
+		mv spark-2.4.7-bin-hadoop2.7 spark
 
-RUN tar -xvzf ~/spark-2.4.7-bin-hadoop2.7.tgz
+ENV SPARK_HOME=/spark \
+		JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
-RUN JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
-
-RUN export JAVA_HOME
-
-RUN export SPARK_HOME=~/spark-2.4.7-bin-hadoop2.7
-
-RUN export PATH=$SPARK_HOME/bin:$PATH
+ENV PATH=$SPARK_HOME/bin:$PATH
 
 
 
